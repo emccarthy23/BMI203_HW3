@@ -21,5 +21,5 @@ def test_read_scoring_matrix():
 def test_write_optimal_matrix():
     input_matrix = io.read_scoring_matrix('data/scoring/BLOSUM50')
     output = io.write_optimal_matrix('test_write_optimal_matrix_file', 0, 'data/scoring/BLOSUM50', input_matrix, 0, 0,0)
-    output_matrix = io.read_scoring_matrix'test_write_optimal_matrix_file')
+    output_matrix = io.read_scoring_matrix('test_write_optimal_matrix_file')
     assert input_matrix == output_matrix

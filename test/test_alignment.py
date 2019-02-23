@@ -33,7 +33,7 @@ def test_smith_waterman_and_scoring_algorithms_round2():
 
 def test_smith_waterman_and_scoring_algorithms_empty_seq():
     filename_a = "data/tests/empty_seq.fa"
-    filename_b = "data/tests/empty_seq.fa
+    filename_b = "data/tests/empty_seq.fa"
     seq_a, seq_b, score_1 =  alignment.smith_waterman_alignment(filename_a, filename_b, 'data/scoring/PAM100', 4, 1)
     score_2 =  alignment.smith_waterman(filename_a, filename_b, 'data/scoring/PAM100', 4, 1)
     score_3 =  alignment.smith_waterman(filename_a, filename_b, 'data/scoring/PAM100', 4, 1)

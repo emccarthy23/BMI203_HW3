@@ -54,7 +54,7 @@ def test_smith_waterman_and_scoring_algorithms_empty_seq():
 def test_optimize_scoring_matrix_and_score_performance():
     pos_pairs = io.read_pairs('data/pairs/Pospairs.txt')
     neg_pairs = io.read_pairs('data/pairs/Negpairs.txt')
-    matrix = 'scoring/PAM100'
+    matrix = 'data/scoring/PAM100'
     matrix_df = io.read_scoring_matrix(matrix)
     pos_seq = []
     neg_seq = []
@@ -71,7 +71,7 @@ def test_optimize_scoring_matrix_and_score_performance():
     for index_1 in range(output[2].shape[0]):
         for index_2 in range(index_1,output[2].shape[0]):
             assert output[2].iloc[index_1,index_2] == output[2].iloc[index_2,index_1]
-    
+
     scoring_matrix = io.read_scoring_matrix('data/scoring/PAM100')
     score = alignment.score_performance(pos_alignments,neg_alignments,scoring_matrix, 5,3)[0]
     # Test that the score is between 0 and 4

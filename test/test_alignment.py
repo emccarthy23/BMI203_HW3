@@ -53,11 +53,11 @@ def test_smith_waterman_and_scoring_algorithms_empty_seq():
 
 def test_score_performance():
     #Make sure that it gives a value between 0 and 4
-    with open('tests/pos_seq.csv', 'r') as f:
+    with open('data/tests/pos_seq.csv', 'r') as f:
         reader = csv.reader(f)
         pos_alignments = list(reader)
         f.close()
-    with open('tests/neg_seq.csv', 'r') as f:
+    with open('data/tests/neg_seq.csv', 'r') as f:
         reader = csv.reader(f)
         neg_alignments = list(reader)
         f.close()
@@ -69,11 +69,11 @@ def test_score_performance():
 
 def test_optimize_scoring_matrix():
     #Make sure outputed matrix is symmetric
-    with open('tests/pos_seq.csv', 'r') as f:
+    with open('data/tests/pos_seq.csv', 'r') as f:
         reader = csv.reader(f)
         pos_alignments = list(reader)
         f.close()
-    with open('tests/neg_seq.csv', 'r') as f:
+    with open('data/tests/neg_seq.csv', 'r') as f:
         reader = csv.reader(f)
         neg_alignments = list(reader)
         f.close()

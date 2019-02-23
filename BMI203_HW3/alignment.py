@@ -343,62 +343,60 @@ def score_performance(pos_sequences,neq_sequences,scoring_matrix, gap,ext):
     return overall_score, false_pos, true_pos
 
 def optimize_scoring_matrix(alignments_pos, alignments_neg, starting_matrix_path, gap_open, gap_ext, num_iterations):
+
+    #Record start time
     start = time.time()
+    #Load scoring matrix
     score_mat = read_scoring_matrix(starting_matrix_path)
-    #Store original matrix
-    original_mat = score_mat
-    #I will perform a Monte Carlo inspired optimization
+    score_mat = score_mat.astype(np.float64)
+    #Store column names
+    residues = score_mat.columns.tolist()
     #Intialize the iteration matrices and iteration score lists
     iteration_mat = [score_mat]*10
 
-    original_score = score_performance(alignments_pos, alignments_neg, score_mat, gap_open, gap_ext)[0]
-    iteration_scores = [original_score]*10
+    #Initialize best iteration scores
+    starting_score = score_performance(alignments_pos, alignments_neg, score_mat, gap_open, gap_ext)
+    iteration_scores = [starting_score]*10
     print("Loaded initial matrix and scores")
 
-#     for k in range(99):
-#         for i in range(score_mat.shape[0]):
-#             for j in range(i,score_mat.shape[0]):
-#                 score_mat.iloc[i,j] = score_mat.iloc[i,j] + uniform(-1,1)
-#                 score_mat.iloc[j,i] = score_mat.iloc[i,j]
-#         iteration_scores.append(score_performance(alignments_pos, alignments_neg, score_mat, gap_open, gap_ext)[0])
-#         iteration_mat.append(score_mat)
-#         score_mat = original_mat
-    print("Created matrix family")
     #Perform optimization with pool of matrices
     #Take top 10 scoring matrices
-    #Mutate each one ten times to create pool of 100 matrices
+    #Mutate each one nine times to create pool of 100 matrices
     #Repeat
-    iteration_counter = []
-    iteration_counter.append(0)
+    iteration_counter = [0]
     iteration_score_counter = []
     iteration_score_counter.append([np.mean(iteration_scores),np.std(iteration_scores),np.max(iteration_scores)])
+
     for i in range(num_iterations):
         #Find top 10 matrices
         best_mat_scores = sorted(iteration_scores)[-10:]
         best_mat_indices = [iteration_scores.index(x) for x in best_mat_scores]
-        new_matrices = []
-        original_scores = iteration_scores
-        iteration_scores = [0]*100
+
         #Make list of 100 matrices with each of the best ten repeated ten times
-        for index in best_mat_indices:
-            new_matrices = new_matrices + [iteration_mat[index]]*10
-        #Mutate the 9 copies but keep one of each original
-        for additive in range(10):
-            iteration_scores[9+10*additive]= (original_scores[best_mat_indices[additive]])
-            for mat_index in range(9):
-                mat = new_matrices[additive+mat_index]
-                for b in range(mat.shape[0]):
-                    for c in range(b,mat.shape[0]):
-                        mat.iloc[b,c] = mat.iloc[b,c] + uniform(-1,1)
-                        mat.iloc[c,b] = mat.iloc[b,c]
-                new_matrices[additive*10+mat_index] = mat
-                iteration_scores[additive*10+mat_index] = score_performance(alignments_pos, alignments_neg, mat, gap_open, gap_ext)[0]
+        new_matrices = []
+        new_scores = []
+        for j in range(10):
+            new_matrices = new_matrices + [iteration_mat[best_mat_indices[j]]]*10
+            new_scores = new_scores + [iteration_scores[best_mat_indices[j]]]*10
+
         iteration_mat = new_matrices
+        iteration_scores = new_scores
+
+        #Mutate the 9 copies but keep one of each of the originals
+        for k in list(set(range(100))-set([0,10,20,30,40,50,60,70,80,90])):
+            rand_adj = pd.DataFrame(np.zeros((24,24)), columns = residues, index = residues)
+            for b in range(24):
+                for c in range(b,24):
+                    rand_adj.iloc[b,c] += uniform(-1,1)
+                    rand_adj.iloc[c,b] = rand_adj.iloc[b,c]
+            iteration_mat[k] = iteration_mat[k] + rand_adj
+            iteration_scores[k] = score_performance(alignments_pos, alignments_neg, iteration_mat[k], gap_open, gap_ext)
         iteration_counter.append(i+1)
         iteration_score_counter.append([np.mean(iteration_scores),np.std(iteration_scores), np.max(iteration_scores)])
         print("Finished iteration", i+1)
     new_matrix_score = max(iteration_scores)
-    new_matrix = iteration_mat[iteration_scores.index(new_matrix_score)]
+    new_matrix = iteration_mat[iteration_scores.index(max(iteration_scores))]
     end = time.time()
     total_time = (end-start)/60
-    return iteration_scores, iteration_mat, new_matrix, new_matrix_score, original_score, iteration_counter, iteration_score_counter, total_time
+    return iteration_mat, iteration_scores, new_matrix, new_matrix_score, starting_score, iteration_counter, iteration_score_counter, total_time
+ 

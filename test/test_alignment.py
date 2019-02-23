@@ -62,7 +62,7 @@ def test_score_performance():
         neg_alignments = list(reader)
         f.close()
     scoring_matrix = io.read_scoring_matrix('data/scoring/PAM100')
-    score = score_performance(pos_alignments,neg_alignments,scoring_matrix, gap,ext)[0]
+    score = alignment.score_performance(pos_alignments,neg_alignments,scoring_matrix, gap,ext)[0]
     # Test that the score equals what you would get from EMBOSS for these sequences.
     assert score <= 4
     assert score >= 0
@@ -77,7 +77,7 @@ def test_optimize_scoring_matrix():
         reader = csv.reader(f)
         neg_alignments = list(reader)
         f.close()
-    output = optimize_scoring_matrix(pos_alignments,neg_alignments, 'data/scoring/PAM100', 5, 3, 1)
+    output = alignment.optimize_scoring_matrix(pos_alignments,neg_alignments, 'data/scoring/PAM100', 5, 3, 1)
     for index_1 in range(output[2].shape[0]):
         for index_2 in range(index_1,output[2].shape[0]):
             assert output[2].iloc[index_1,index_2] == output[2].iloc[index_2,index_1]

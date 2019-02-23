@@ -12,3 +12,4 @@ Status](https://travis-ci.org/emccarthy23/BMI203_HW3.svg?branch=master)](https:/
 1. Implement the Smith Waterman Algorithm and an Otimization Algorithm for the scoring matrix
 
 
+#To test Travis

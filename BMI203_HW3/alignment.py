@@ -2,8 +2,6 @@ from .io import read_pairs, read_sequence, read_scoring_matrix, write_alignment,
 import pandas as pd
 import numpy as np
 import os
-from sklearn.metrics import roc_curve, auc
-import matplotlib.pyplot as plt
 from random import uniform
 import time
 import random

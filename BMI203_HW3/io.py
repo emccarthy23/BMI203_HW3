@@ -78,7 +78,7 @@ def write_alignment(filename, path_seq_a, path_seq_b, path_scoring_matrix, gap_o
 
     out.close()
 
-new_matrix, new_matrix_score, original_score, iteration_counter, iteration_score_counter, total_time
+
 def write_optimal_matrix(filename, k, path, opt_matrix, opt_matrix_score, original_score,time):
     """
     Write the optimal scoring matrix out to a file.

@@ -4,7 +4,7 @@ HW3
 # HW3 Travis Setup
 
 [![Build
-Status](https://travis-ci.org/emccarthy23/BMI203_HW3.svg?branch=master)](https://travis-ci.org/emccarthy23/BMI302_HW3)
+Status](https://travis-ci.org/emccarthy23/BMI203_HW3.svg?branch=master)](https://travis-ci.org/emccarthy23/BMI203_HW3)
 
 
 ## assignment

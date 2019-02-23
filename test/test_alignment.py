@@ -51,33 +51,29 @@ def test_smith_waterman_and_scoring_algorithms_empty_seq():
     assert score_3 == 0
     assert score_4 == 0
 
-def test_score_performance():
-    #Make sure that it gives a value between 0 and 4
-    with open('data/tests/pos_seq.csv', 'r') as f:
-        reader = csv.reader(f)
-        pos_alignments = list(reader)
-        f.close()
-    with open('data/tests/neg_seq.csv', 'r') as f:
-        reader = csv.reader(f)
-        neg_alignments = list(reader)
-        f.close()
-    scoring_matrix = io.read_scoring_matrix('data/scoring/PAM100')
-    score = alignment.score_performance(pos_alignments,neg_alignments,scoring_matrix, 5,3)[0]
-    # Test that the score equals what you would get from EMBOSS for these sequences.
-    assert score <= 4
-    assert score >= 0
+def test_optimize_scoring_matrix_and_score_performance():
+    pos_pairs = io.read_pairs('data/pairs/Pospairs.txt')
+    neg_pairs = io.read_pairs('data/pairs/Negpairs.txt')
+    matrix = 'scoring/PAM100'
+    matrix_df = io.read_scoring_matrix(matrix)
+    pos_seq = []
+    neg_seq = []
 
-def test_optimize_scoring_matrix():
-    #Make sure outputed matrix is symmetric
-    with open('data/tests/pos_seq.csv', 'r') as f:
-        reader = csv.reader(f)
-        pos_alignments = list(reader)
-        f.close()
-    with open('data/tests/neg_seq.csv', 'r') as f:
-        reader = csv.reader(f)
-        neg_alignments = list(reader)
-        f.close()
-    output = alignment.optimize_scoring_matrix(pos_alignments,neg_alignments, 'data/scoring/PAM100', 5, 3, 1)
+    for x in pos_pairs:
+        opt_seq_a,opt_seq_b,score = alignment.smith_waterman_alignment(x[0], x[1], opt_matrix, gap, ext)
+    pos_seq.append([opt_seq_a,opt_seq_b])
+
+    for x in neg_pairs:
+        opt_seq_a,opt_seq_b,score = alignment.smith_waterman_alignment(x[0], x[1], opt_matrix, gap, ext)
+    neg_seq.append([opt_seq_a,opt_seq_b])
+
+    output = alignment.optimize_scoring_matrix(pos_seq,neg_seq, matrix, 5, 3, 1)
     for index_1 in range(output[2].shape[0]):
         for index_2 in range(index_1,output[2].shape[0]):
             assert output[2].iloc[index_1,index_2] == output[2].iloc[index_2,index_1]
+    
+    scoring_matrix = io.read_scoring_matrix('data/scoring/PAM100')
+    score = alignment.score_performance(pos_alignments,neg_alignments,scoring_matrix, 5,3)[0]
+    # Test that the score is between 0 and 4
+    assert score <= 4
+    assert score >= 0

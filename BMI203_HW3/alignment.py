@@ -8,6 +8,7 @@ from random import uniform
 import time
 import random
 
+
 def smith_waterman_alignment(path_seq_a, path_seq_b, path_scoring_matrix, gap_open, gap_extend):
     #Read sequences and scoring matrix
     name_a, seq_a = read_sequence(path_seq_a)
@@ -403,4 +404,3 @@ def optimize_scoring_matrix(alignments_pos, alignments_neg, starting_matrix_path
     end = time.time()
     total_time = (end-start)/60
     return iteration_scores, iteration_mat, new_matrix, new_matrix_score, original_score, iteration_counter, iteration_score_counter, total_time
- 

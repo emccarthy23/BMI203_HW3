@@ -1,5 +1,13 @@
 from BMI203_HW3 import io
+import pandas as pd
+import numpy as np
 import os
+from sklearn.metrics import roc_curve, auc
+import matplotlib.pyplot as plt
+from random import uniform
+import time
+import random
+
 #Not testing write_alignment
 def test_read_pairs():
     pairs = io.read_pairs('data/pairs/Pospairs.txt')

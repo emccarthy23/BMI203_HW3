@@ -2,7 +2,15 @@ from BMI203_HW3 import alignment
 from BMI203_HW3 import io
 import os
 import csv
-smith_waterman_alignment, smith_waterman,smith_waterman_len_adj, score_alignment, score_performance, optimize_scoring_matrix
+import pandas as pd
+import numpy as np
+import os
+from sklearn.metrics import roc_curve, auc
+import matplotlib.pyplot as plt
+from random import uniform
+import time
+import random
+
 def test_smith_waterman_and_scoring_algorithms_round1():
     filename_a = "data/sequences/prot-0031.fa"
     filename_b = "data/sequences/prot-0034.fa"

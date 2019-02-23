@@ -60,11 +60,11 @@ def test_optimize_scoring_matrix_and_score_performance():
     neg_seq = []
 
     for x in pos_pairs:
-        opt_seq_a,opt_seq_b,score = alignment.smith_waterman_alignment(x[0], x[1], opt_matrix, gap, ext)
+        opt_seq_a,opt_seq_b,score = alignment.smith_waterman_alignment(x[0], x[1], matrix, 5, 3)
     pos_seq.append([opt_seq_a,opt_seq_b])
 
     for x in neg_pairs:
-        opt_seq_a,opt_seq_b,score = alignment.smith_waterman_alignment(x[0], x[1], opt_matrix, gap, ext)
+        opt_seq_a,opt_seq_b,score = alignment.smith_waterman_alignment(x[0], x[1], matrix, 5, 3)
     neg_seq.append([opt_seq_a,opt_seq_b])
 
     output = alignment.optimize_scoring_matrix(pos_seq,neg_seq, matrix, 5, 3, 1)

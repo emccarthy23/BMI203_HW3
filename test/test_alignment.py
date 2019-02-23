@@ -62,7 +62,7 @@ def test_score_performance():
         neg_alignments = list(reader)
         f.close()
     scoring_matrix = io.read_scoring_matrix('data/scoring/PAM100')
-    score = alignment.score_performance(pos_alignments,neg_alignments,scoring_matrix, gap,ext)[0]
+    score = alignment.score_performance(pos_alignments,neg_alignments,scoring_matrix, 5,3)[0]
     # Test that the score equals what you would get from EMBOSS for these sequences.
     assert score <= 4
     assert score >= 0

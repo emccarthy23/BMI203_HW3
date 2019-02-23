@@ -399,4 +399,3 @@ def optimize_scoring_matrix(alignments_pos, alignments_neg, starting_matrix_path
     end = time.time()
     total_time = (end-start)/60
     return iteration_mat, iteration_scores, new_matrix, new_matrix_score, starting_score, iteration_counter, iteration_score_counter, total_time
- 
